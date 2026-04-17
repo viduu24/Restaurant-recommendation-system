@@ -1,0 +1,13 @@
+[theme]
+base = "dark"
+primaryColor = "#E8450A"
+backgroundColor = "#0f0f1a"
+secondaryBackgroundColor = "#1a1a2e"
+textColor = "#ffffff"
+
+[server]
+# Increase max upload size if users upload files
+maxUploadSize = 200
+
+[browser]
+gatherUsageStats = false
