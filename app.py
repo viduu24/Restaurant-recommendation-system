@@ -15,6 +15,7 @@ import os
 import re
 import pickle
 import warnings
+import snowflake.connector
 warnings.filterwarnings("ignore")
 
 # Base directory — resolved relative to this file so it works locally
@@ -126,7 +127,7 @@ st.markdown("""
 # ════════════════════════════════════════════════════════════════════════════════
 
 @st.cache_data(show_spinner="Loading restaurant dataset…")
-import snowflake.connector
+
 
 @st.cache_data
 def load_business_data():
