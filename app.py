@@ -128,30 +128,7 @@ st.markdown("""
 
 @st.cache_data(show_spinner="Loading restaurant dataset…")
 def load_business_data():
-    conn = snowflake.connector.connect(
-        user=st.secrets["snowflake"]["user"],
-        password=st.secrets["snowflake"]["password"],
-        account=st.secrets["snowflake"]["account"],
-        warehouse=st.secrets["snowflake"]["warehouse"],
-        database=st.secrets["snowflake"]["database"],
-        schema=st.secrets["snowflake"]["schema"],
-        role=st.secrets["snowflake"]["role"]
-    )
-
-    try:
-        cur = conn.cursor()
-
-        # ❌ REMOVE THIS LINE COMPLETELY
-        # cur.execute(f"USE WAREHOUSE {st.secrets['snowflake']['warehouse']}")
-
-        cur.execute("SELECT * FROM DATAMINING.ANALYTICS.BUSINESS_REVIEWS_AGG")
-        df = cur.fetch_pandas_all()
-
-        cur.close()
-
-    finally:
-        conn.close()
-
+    df = pd.read_csv("data/business_reviews_agg.csv")
     return df
 
 def _ensure_surprise():
