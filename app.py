@@ -126,25 +126,20 @@ st.markdown("""
 # ════════════════════════════════════════════════════════════════════════════════
 
 @st.cache_data(show_spinner="Loading restaurant dataset…")
+import snowflake.connector
+
+@st.cache_data
 def load_business_data():
-    """
-    Load the main business-reviews aggregated CSV.
-    Adds a cleaned 'primary_category' column extracted from the
-    raw CATEGORIES string (takes the first non-'Restaurants' tag).
-    """
-    df = pd.read_csv(os.path.join(BASE_DIR, "business_reviews_agg.csv"))
-
-    # ── Derive a clean single-label primary category ──────────────────────────
-    def extract_primary(cat_str):
-        if not isinstance(cat_str, str):
-            return "Other"
-        parts = [c.strip() for c in cat_str.split(",")]
-        # Prefer any part that is NOT the generic 'Restaurants' label
-        non_generic = [p for p in parts if p.lower() != "restaurants"]
-        return non_generic[0] if non_generic else parts[0]
-
-    df["primary_category"] = df["CATEGORIES"].apply(extract_primary)
-    df["IS_OPEN_LABEL"]    = df["IS_OPEN"].map({1: "Open", 0: "Closed"})
+    conn = snowflake.connector.connect(
+        user=st.secrets["snowflake"]["user"],
+        password=st.secrets["snowflake"]["password"],
+        account=st.secrets["snowflake"]["account"],
+        warehouse=st.secrets["snowflake"]["warehouse"],
+        database=st.secrets["snowflake"]["database"],
+        schema=st.secrets["snowflake"]["schema"]
+    )
+    df = pd.read_sql("SELECT * FROM USER_REVIEWS_AGG", conn)
+    conn.close()
     return df
 
 
