@@ -127,7 +127,6 @@ st.markdown("""
 # ════════════════════════════════════════════════════════════════════════════════
 
 @st.cache_data(show_spinner="Loading restaurant dataset…")
-
 def load_business_data():
     conn = snowflake.connector.connect(
         user=st.secrets["snowflake"]["user"],
@@ -135,10 +134,21 @@ def load_business_data():
         account=st.secrets["snowflake"]["account"],
         warehouse=st.secrets["snowflake"]["warehouse"],
         database=st.secrets["snowflake"]["database"],
-        schema=st.secrets["snowflake"]["schema"]
+        schema=st.secrets["snowflake"]["schema"],
+        role=st.secrets["snowflake"]["role"]
     )
-    df = pd.read_sql("SELECT * FROM DATAMINING.ANALYTICS.BUSINESS_REVIEWS_AGG", conn)
-    conn.close()
+
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM DATAMINING.ANALYTICS.BUSINESS_REVIEWS_AGG")
+        df = cur.fetch_pandas_all()
+        cur.close()
+    except Exception as e:
+        st.error(f"Snowflake Error: {e}")
+        raise e
+    finally:
+        conn.close()
+
     return df
 
 
