@@ -93,7 +93,7 @@ def _ensure_surprise():
 
 @st.cache_resource(show_spinner="Loading SVD model…")
 def load_svd_model():
-    path = os.path.join(BASE_DIR, "models", "svd_model.pkl")
+    path = os.path.join(BASE_DIR, "data", "svd_model.pkl")
     if not os.path.exists(path):
         return None
     if not _ensure_surprise():
