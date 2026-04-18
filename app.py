@@ -141,23 +141,18 @@ def load_business_data():
     try:
         cur = conn.cursor()
 
-        # 🔥 THIS IS THE FIX
-        cur.execute(f"USE WAREHOUSE {st.secrets['snowflake']['warehouse']}")
+        # ❌ REMOVE THIS LINE COMPLETELY
+        # cur.execute(f"USE WAREHOUSE {st.secrets['snowflake']['warehouse']}")
 
         cur.execute("SELECT * FROM DATAMINING.ANALYTICS.BUSINESS_REVIEWS_AGG")
         df = cur.fetch_pandas_all()
 
         cur.close()
 
-    except Exception as e:
-        st.error(f"Snowflake Error: {e}")
-        raise e
-
     finally:
         conn.close()
 
     return df
-
 
 def _ensure_surprise():
     """
