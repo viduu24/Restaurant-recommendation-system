@@ -128,8 +128,6 @@ st.markdown("""
 
 @st.cache_data(show_spinner="Loading restaurant dataset…")
 
-
-@st.cache_data
 def load_business_data():
     conn = snowflake.connector.connect(
         user=st.secrets["snowflake"]["user"],
