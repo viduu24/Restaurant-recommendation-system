@@ -139,7 +139,7 @@ def load_business_data():
         database=st.secrets["snowflake"]["database"],
         schema=st.secrets["snowflake"]["schema"]
     )
-    df = pd.read_sql("SELECT * FROM USER_REVIEWS_AGG", conn)
+    df = pd.read_sql("SELECT * FROM DATAMINING.ANALYTICS.BUSINESS_REVIEWS_AGG", conn)
     conn.close()
     return df
 
