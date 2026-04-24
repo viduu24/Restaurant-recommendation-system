@@ -68,7 +68,7 @@ st.markdown("""
 
 @st.cache_data(show_spinner="Loading restaurant dataset…")
 def load_business_data():
-    df = pd.read_csv("data/bussiness_review_agg2.csv")
+    df = pd.read_csv("data/business_review_agg3.csv")
     df["IS_OPEN_LABEL"] = df["IS_OPEN"].map({1: "Open", 0: "Closed"})
     df["primary_category"] = df["CATEGORIES"].str.split(",").str[0].str.strip()
     return df
